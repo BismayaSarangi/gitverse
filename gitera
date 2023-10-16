@@ -1,1 +1,30 @@
-now you see me
+version: '3'
+services:
+   application:
+      image: 'bismaya077/flaskapp:latest'
+      ports:
+        - '5000:5000'
+      environment:
+          MYSQL_HOST: 172.31.7.164
+          MYSQL_USER: admin
+          MYSQL_PASSWORD: admin
+          MYSQL_DB: mydb
+      depends_on:
+        - database
+
+   database:
+      image: 'mysql:5.7'
+      ports:
+        - '3306:3306'
+      environment:
+          MYSQL_ROOT_PASSWORD: admin
+          MYSQL_DATABASE: mydb
+          MYSQL_USER: admin
+          MYSQL_PASSWORD: admin
+
+      volumes:
+        - './message.sql:/docker-entrypoint-initdb.d/message.sql'
+        - 'mysqldata:/var/lib/mysql'
+volumes:
+  mysqldata:
+
